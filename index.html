@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 修改容器背景色为透明 */
+        .iframe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: transparent; /* 移除默认灰色背景 */
+        }
+
+        /* 新增内容拉伸包装层 */
+        .iframe-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: stretch; /* 强制拉伸 */
+        }
+
+        .responsive-iframe {
+            flex: 1; /* 填充剩余空间 */
+            min-width: 100%; /* 保证最小宽度 */
+            height: 100%;
+            border: 0;
+        }
+
+        /* 优化横屏显示 */
+        @media (orientation: landscape) {
+            .responsive-iframe {
+                min-width: auto; /* 允许横向扩展 */
+            }
+        }
+
+        /* 移动端保持原有优化 */
+        @media (max-width: 768px) {
+            .iframe-container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="iframe-container">
+        <div class="iframe-wrapper">
+            <iframe 
+                class="responsive-iframe"
+                src="https://chat.atomicspace.eu.org/ui/chat/babefc9ad01fd6fe"
+                allow="microphone"
+                loading="lazy"
+                title="Chat Interface"
+            ></iframe>
+        </div>
+    </div>
+</body>
+</html>
