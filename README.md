@@ -76,5 +76,6 @@ graph TD
 | Gemini-1.5-Flash                  | 语音识别和图像识别                     |
 | Gemini-2.0-Flash-Lite             | 心理知识库检索问题优化                 |
 | DeepSeek-V3-671B                  | 知识问答及代码编写                     |
-API提供：硅基流动，智谱，谷歌，
+
+API提供：硅基流动，智谱，谷歌，星火，百度
 
