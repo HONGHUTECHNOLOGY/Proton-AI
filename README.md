@@ -2,7 +2,6 @@
 ## 质子AI网页端：https://ai.atomicspace.eu.org
 ## 质子AI已更新至V2版本，心理辅导能力遥遥领先！最新版本已接入新版V3提供强大代码能力
 ### 质子AI是由鸿鹄科技开发的综合AI大模型，利用AI智能判断问题类型选择合适的大模型回答，同时实现了多模态能力
--http://letsmain.com/github-access-master?utm_source=greasyfork-origin--
 ### 智能AI路由
 质子AI的智能AI路由技术，通过前置AI模型判断识别类型，分配给不同领域模型执行任务，这使得小参数模型也能有自己的用武之地。
 ```mermaid
