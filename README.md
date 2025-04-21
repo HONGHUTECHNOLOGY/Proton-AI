@@ -10,7 +10,7 @@ graph TD
     A[用户输入] --> B[AI模型判断]
     B --> C[模型选择]
     
-    C --> D1[DeepSeek-R1-Distill-Qwen-7B]
+    C --> D1[DeepSeek-R1]
     C --> D2[Cogview-3-Flash]
     C --> D3[Qwen2.5-7B-Instruct]
     C --> D4[GLM-4-9B-chat]
