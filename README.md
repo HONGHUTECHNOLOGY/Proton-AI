@@ -162,6 +162,7 @@ graph TD
 | Qwen2.5-Coder-7B-Instruct         | 代码编写                               |
 | Kolors                            | 图像生成                               |
 | Cogview-3-Flash                   | 图像生成                               |
+| CogviewX-Flash                   | 视频生成                               |
 | Qwen2.5-7B-Instruct               | 外语翻译、文学处理、模型选择             |
 | GLM-4-9B-chat                     | 长文本理解                             |
 | GLM-4-Flash                     | 利用高德MCP提供天气查询，路线规划，旅游规划，店铺推荐等服务                             |
