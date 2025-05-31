@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>质子AI</title>
+    <meta name="description" content="质子AI">
+    
+    <!-- 网页图标配置 -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- 关键视口配置 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 安全区域适配 */
+        :root {
+            --safe-area-top: env(safe-area-inset-top);
+            --safe-area-bottom: env(safe-area-inset-bottom);
+            --safe-area-left: env(safe-area-inset-left);
+            --safe-area-right: env(safe-area-inset-right);
+        }
+
+        .iframe-container {
+            position: fixed;
+            top: var(--safe-area-top);
+            left: var(--safe-area-left);
+            width: calc(100vw - var(--safe-area-left) - var(--safe-area-right));
+            height: calc(100vh - var(--safe-area-top) - var(--safe-area-bottom));
+            padding: 0 calc(var(--safe-area-right) + 5px) calc(var(--safe-area-bottom) + 5px) calc(var(--safe-area-left) + 5px);
+            overflow: hidden;
+            background: #fff;
+        }
+
+        /* 旧版iOS兼容 */
+        @supports (padding-bottom: constant(safe-area-inset-bottom)) {
+            :root {
+                --safe-area-top: constant(safe-area-inset-top);
+                --safe-area-bottom: constant(safe-area-inset-bottom);
+                --safe-area-left: constant(safe-area-inset-left);
+                --safe-area-right: constant(safe-area-inset-right);
+            }
+        }
+
+        .responsive-iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* 虚拟键盘弹出优化 */
+        @media (max-height: 420px) {
+            .iframe-container {
+                height: calc(var(--visual-viewport-height) - var(--safe-area-top));
+                padding-bottom: 0;
+            }
+        }
+        
+        /* 使用提示窗口样式 */
+        .guide-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.4s ease-out;
+            pointer-events: none;
+        }
+        
+        .guide-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .user-guide {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 80%;
+            max-width: 400px;
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .user-guide.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .guide-content {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 15px;
+        }
+        
+        .guide-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #111;
+            text-align: center;
+        }
+        
+        .guide-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            background-color: #f0f0f0;
+            color: #666;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .guide-close:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <!-- iframe容器 -->
+    <div class="iframe-container">
+        <iframe 
+            class="responsive-iframe"
+            src="https://dify.atomicspace.eu.org/chat/G7MQSdYctg9KEi0L"
+            allow="microphone"
+            loading="lazy"
+            title="Chat Interface"
+        ></iframe>
+    </div>
+
+    <script>
+        // 动态视口管理
+        let timeout;
+        const visualViewport = window.visualViewport || window;
+        
+        const updateViewport = () => {
+            const container = document.querySelector('.iframe-container');
+            const visualHeight = visualViewport.height;
+            
+            document.documentElement.style.setProperty('--visual-viewport-height', `${visualHeight}px`);
+            
+            if (/Android/.test(navigator.userAgent)) {
+                const offset = window.innerHeight - visualHeight;
+                container.style.paddingBottom = Math.max(offset, 0) + 'px';
+            }
+            
+            if (/iPhone|iPad/.test(navigator.userAgent)) {
+                container.style.height = `${visualHeight - container.offsetTop}px`;
+            }
+        };
+
+        const events = ['resize', 'scroll', 'orientationchange'];
+        events.forEach(e => {
+            window.addEventListener(e, () => {
+                clearTimeout(timeout);
+                timeout = setTimeout(updateViewport, 100);
+            });
+        });
+
+        // 创建提示元素
+        function createGuide() {
+            const overlay = document.createElement('div');
+            overlay.className = 'guide-overlay';
+            overlay.id = 'guideOverlay';
+            
+            const guide = document.createElement('div');
+            guide.className = 'user-guide';
+            guide.id = 'userGuide';
+            
+            guide.innerHTML = `
+                <button class="guide-close" id="closeGuide">×</button>
+                <div class="guide-title">使用指南</div>
+                <div class="guide-content">
+                    欢迎使用质子AI！请按照以下步骤开始：
+                    <br><br>
+                    1. 在新对话设置中选择对话模式
+                    <br>
+                    2. 点击右上角图标可随时更改设置
+                    <br><br>
+                    如需帮助，请联系客服邮箱：
+                    honghutechnology@126.com
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            document.body.appendChild(guide);
+            
+            return { overlay, guide };
+        }
+
+        // 显示提示
+        function showGuide() {
+            const { overlay, guide } = createGuide();
+            
+            // 显示元素
+            setTimeout(() => {
+                overlay.classList.add('active');
+                guide.classList.add('active');
+            }, 50);
+            
+            // 关闭处理
+            const closeHandler = () => {
+                guide.classList.remove('active');
+                overlay.classList.remove('active');
+                
+                // 动画结束后完全移除元素
+                setTimeout(() => {
+                    guide.remove();
+                    overlay.remove();
+                }, 400);
+            };
+            
+            document.getElementById('closeGuide').addEventListener('click', closeHandler);
+            overlay.addEventListener('click', closeHandler);
+        }
+
+        // 初始加载处理
+        window.addEventListener('load', () => {
+            // iOS全屏模式触发
+            if (window.navigator.standalone) {
+                document.documentElement.style.height = 'fill-available';
+                window.scrollTo(0, 1);
+            }
+            updateViewport();
+            
+            // 1秒后显示指南
+            setTimeout(showGuide, 1000);
+        });
+
+        // 输入框聚焦处理
+        document.addEventListener('focusin', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                requestAnimationFrame(() => {
+                    e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
