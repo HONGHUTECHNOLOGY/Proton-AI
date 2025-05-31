@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>质子AI - 系统维护中</title>
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --primary-light: rgba(58, 134, 255, 0.1);
+            --background-color: #f8f9fa;
+            --text-color: #333;
+            --light-text: #6c757d;
+            --status-color: #ff9500;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(58, 134, 255, 0.05) 0%, rgba(58, 134, 255, 0.05) 90%);
+        }
+        
+        .container {
+            max-width: 600px;
+            padding: 2.5rem;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin: 1rem;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+        
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--light-text);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 0.6rem 1.6rem;
+            background-color: #fff4e6;
+            color: var(--status-color);
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1.8rem;
+            font-size: 0.95rem;
+        }
+        
+        .contact {
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            color: var(--light-text);
+            font-weight: 500;
+        }
+        
+        .contact a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .contact a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 优化后的旋转动画 */
+        .spinner {
+            width: 60px;
+            height: 60px;
+            margin: 2.5rem auto;
+            position: relative;
+        }
+        
+        .spinner-inner {
+            width: 100%;
+            height: 100%;
+            border: 4px solid var(--primary-light);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1.2s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite;
+            box-sizing: border-box;
+        }
+        
+        @keyframes spin {
+            0% { 
+                transform: rotate(0deg);
+                border-top-width: 4px;
+            }
+            50% {
+                border-top-width: 6px;
+            }
+            100% { 
+                transform: rotate(360deg);
+                border-top-width: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>质子AI系统维护中</h1>
+        <div class="status">维护进行中</div>
+        
+        <p>我们正在对质子AI进行重要升级，以提供更强大、更稳定的服务体验。预计维护将在 <strong>5小时</strong> 内完成。</p>
+        
+        <!-- 优化后的旋转动画 -->
+        <div class="spinner">
+            <div class="spinner-inner"></div>
+        </div>
+        
+        <p>感谢您的耐心等待。维护完成后，您将能体验到更快的响应速度和更多新功能。</p>
+        
+        <div class="contact">
+            如有紧急问题，请联系 <a href="mailto:support@protai.com">honghutechnology@126.com</a>
+        </div>
+    </div>
+</body>
+</html>
